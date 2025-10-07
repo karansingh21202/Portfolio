@@ -177,7 +177,7 @@ export default function PortfolioPage() {
             </div>
           </div>
           <div className="hidden md:flex items-center justify-center">
-            <div className="w-full max-w-sm bg-slate-50 rounded-xl shadow-lg border border-slate-200 p-4"><div className="flex justify-between items-center mb-2"><div className="flex gap-1.5"><span className="w-3 h-3 bg-red-400 rounded-full"></span><span className="w-3 h-3 bg-yellow-400 rounded-full"></span><span className="w-3 h-3 bg-green-400 rounded-full"></span></div><span className="text-xs text-slate-400">bash</span></div><div className="bg-slate-800 text-slate-300 rounded-md p-4 text-sm font-mono whitespace-pre-wrap"><span className="text-sky-400">$</span> npm run dev<br /><br /><span className="text-green-400">{'>'}</span> Portfolio ready at:<br /><span className="text-yellow-400 underline">http://localhost:3000</span></div></div>
+            <div className="w-full max-w-sm bg-slate-50 rounded-xl shadow-lg border border-slate-200 p-4"><div className="flex justify-between items-center mb-2"><div className="flex gap-1.5"><span className="w-3 h-3 bg-red-400 rounded-full"></span><span className="w-3 h-3 bg-yellow-400 rounded-full"></span><span className="w-3 h-3 bg-green-400 rounded-full"></span></div><span className="text-xs text-slate-400">bash</span></div><div className="bg-slate-800 text-slate-300 rounded-md p-4 text-sm font-mono whitespace-pre-wrap"><span className="text-sky-400">$</span> npm run dev<br /><br /><span className="text-green-400">{'>'}</span> Portfolio ready at:<br /><span className="text-yellow-400 underline">https://portfolio-five-gamma-58.vercel.app</span></div></div>
           </div>
         </section>
 
