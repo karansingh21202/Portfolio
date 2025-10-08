@@ -196,7 +196,7 @@ export default function PortfolioPage() {
                 <p className="text-sm font-semibold text-slate-700">
                     GitHub Contributions: 
                     <a href="https://github.com/opencut-app/opencut/pull/138" target="_blank" rel="noopener noreferrer" className="ml-2 text-slate-600 hover:text-slate-900 underline font-medium">PR #138</a>, 
-                    <a href="https://github.com/opencut-app/opencut/pull/425" target="_blank" rel="noopener noreferrer" className="ml-2 text-slate-600 hover:text-slate-900 underline font-medium">PR #425</a>
+                    <a href="https://github.com/opencut-app/opencut/pull/425" target="_blank" rel="noopener noreferrer" className="ml-2 text-slate-600 hover:text-slate-900 underline font-medium">PR #425 etc.</a>
                 </p>
             </div>
           </div>
