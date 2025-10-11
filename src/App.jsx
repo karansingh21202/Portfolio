@@ -1,5 +1,95 @@
 import React, { useState, useEffect } from 'react';
 
+// --- Animated Text Component ---
+const AnimatedText = ({ children, className = "" }) => {
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
+  const [randomStyles, setRandomStyles] = useState({});
+  
+  const fonts = [
+    'font-serif',
+    'font-mono', 
+    'font-sans',
+    'font-bold',
+    'font-light',
+    'font-medium',
+    'font-semibold',
+    'font-extrabold',
+    'font-black'
+  ];
+  
+  const colors = [
+    'text-blue-600',
+    'text-purple-600', 
+    'text-green-600',
+    'text-red-600',
+    'text-yellow-600',
+    'text-pink-600',
+    'text-indigo-600',
+    'text-teal-600',
+    'text-orange-600',
+    'text-cyan-600',
+    'text-emerald-600',
+    'text-violet-600'
+  ];
+
+  const rotations = [
+    '-rotate-12',
+    'rotate-12',
+    '-rotate-6',
+    'rotate-6',
+    '-rotate-3',
+    'rotate-3'
+  ];
+
+  const getRandomStyle = () => {
+    const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const randomRotation = rotations[Math.floor(Math.random() * rotations.length)];
+    return `${randomFont} ${randomColor} transform scale-125 ${randomRotation}`;
+  };
+
+  // Generate fresh random style every time for true randomness
+  const handleMouseEnter = (index) => {
+    setHoveredIndex(index);
+    // Always generate new random style for true randomness
+    setRandomStyles(prev => ({
+      ...prev,
+      [index]: getRandomStyle()
+    }));
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredIndex(-1);
+  };
+
+  const text = typeof children === 'string' ? children : children?.toString() || '';
+  
+  return (
+    <span className={className}>
+      {text.split('').map((char, index) => (
+        <span
+          key={index}
+          className={`
+            inline-block transition-all duration-200 ease-out cursor-pointer will-change-transform
+            ${hoveredIndex === index ? 
+              randomStyles[index] || getRandomStyle() : 
+              'hover:scale-105 hover:text-slate-600'
+            }
+          `}
+          onMouseEnter={() => handleMouseEnter(index)}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            transformOrigin: 'center',
+            display: char === ' ' ? 'inline' : 'inline-block'
+          }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ))}
+    </span>
+  );
+};
+
 // --- SVG Icons for better visuals ---
 const ExternalLinkIcon = () => (
   <svg
@@ -57,6 +147,7 @@ const MailIcon = () => (
 // --- Typing Effect Component logic ---
 const TypingEffect = () => {
   const [typedText, setTypedText] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
   const textToType = "From Open Source to AI-Powered Platforms.";
   
   useEffect(() => {
@@ -66,6 +157,7 @@ const TypingEffect = () => {
         setTypedText(textToType.substring(0, i + 1));
         i++;
       } else {
+        setIsComplete(true);
         clearInterval(typingInterval);
       }
     }, 100);
@@ -75,7 +167,11 @@ const TypingEffect = () => {
 
   return (
       <h2 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight min-h-[120px] md:min-h-[144px]">
-          {typedText}
+          {isComplete ? (
+            <AnimatedText>{typedText}</AnimatedText>
+          ) : (
+            typedText
+          )}
           <span className="animate-pulse">|</span>
       </h2>
   );
@@ -137,7 +233,7 @@ export default function PortfolioPage() {
           </div>
           <div className="flex items-center gap-4">
             <div>
-                <h1 className="font-semibold">Karan Singh</h1>
+                <AnimatedText className="font-semibold">Karan Singh</AnimatedText>
                 <p className="text-xs text-slate-500">Software Engineer</p>
             </div>
             <div className="h-6 w-px bg-slate-200 hidden sm:block"></div>
@@ -183,9 +279,9 @@ export default function PortfolioPage() {
 
         {/* Technical Experience Section */}
         <section id="experience" className="py-20">
-          <h3 className="text-3xl font-bold tracking-tight text-center">Technical Experience</h3>
+          <AnimatedText className="text-3xl font-bold tracking-tight text-center block">Technical Experience</AnimatedText>
           <div className="mt-10 max-w-3xl mx-auto bg-slate-50 p-8 rounded-xl border border-slate-200 shadow-sm">
-            <h4 className="text-xl font-semibold">Open Source Contributor — <a href="https://opencut.app/" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-600">OpenCut</a></h4>
+            <h4 className="text-xl font-semibold"><AnimatedText>Open Source Contributor — </AnimatedText><a href="https://opencut.app/" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-600">OpenCut</a></h4>
             <p className="text-sm text-slate-500 mt-1">Video Editing Platform</p>
             <ul className="mt-4 space-y-3 text-slate-600 list-disc list-inside">
               <li>Fixed timeline desynchronization by synchronizing ruler and track scrolls using Radix UI, significantly improving the editing experience for long videos.</li>
@@ -204,7 +300,7 @@ export default function PortfolioPage() {
 
         {/* Projects Section */}
         <section id="projects" className="py-20">
-          <h3 className="text-3xl font-bold tracking-tight text-center">Featured Projects</h3>
+          <AnimatedText className="text-3xl font-bold tracking-tight text-center block">Featured Projects</AnimatedText>
           <p className="text-center mt-3 text-slate-500 max-w-2xl mx-auto">A selection of projects that showcase my skills in web development, AI, and building end-to-end platforms.</p>
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((p) => (
@@ -213,7 +309,7 @@ export default function PortfolioPage() {
                   <div className="text-xs uppercase font-semibold text-slate-600 tracking-wider">{p.category}</div>
                   <ExternalLinkIcon />
                 </div>
-                <h4 className="mt-4 text-xl font-semibold">{p.title}</h4>
+                <AnimatedText className="mt-4 text-xl font-semibold block">{p.title}</AnimatedText>
                 <p className="mt-2 text-sm text-slate-600">{p.description}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {p.stack.map((s) => (<span key={s} className="px-2 py-0.5 text-xs bg-slate-200 text-slate-600 rounded-md">{s}</span>))}
@@ -225,12 +321,12 @@ export default function PortfolioPage() {
 
         {/* Skills Section */}
         <section id="skills" className="py-20">
-            <h3 className="text-3xl font-bold tracking-tight text-center">Technical Toolkit</h3>
+            <AnimatedText className="text-3xl font-bold tracking-tight text-center block">Technical Toolkit</AnimatedText>
             <p className="text-center mt-3 text-slate-500 max-w-2xl mx-auto">A snapshot of the languages, frameworks, and tools I use to bring ideas to life.</p>
             <div className="mt-12 max-w-4xl mx-auto space-y-8">
                 {skills.map((skillCategory) => (
                 <div key={skillCategory.category}>
-                    <h4 className="font-semibold text-slate-900 text-lg mb-4">{skillCategory.category}</h4>
+                    <AnimatedText className="font-semibold text-slate-900 text-lg mb-4 block">{skillCategory.category}</AnimatedText>
                     {skillCategory.list ? (
                     <div className="flex flex-wrap gap-3">
                         {skillCategory.list.map((item) => (
@@ -249,18 +345,18 @@ export default function PortfolioPage() {
 
         {/* Achievements Section */}
         <section id="achievements" className="py-20">
-           <h3 className="text-3xl font-bold tracking-tight text-center">Achievements & Recognition</h3>
+           <AnimatedText className="text-3xl font-bold tracking-tight text-center block">Achievements & Recognition</AnimatedText>
            <div className="mt-10 max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
              <div className="p-6 bg-slate-50 rounded-lg border border-slate-200">
-                <h4 className="font-semibold text-slate-900">Competitive Programming</h4>
+                <AnimatedText className="font-semibold text-slate-900 block">Competitive Programming</AnimatedText>
                 <p className="mt-2 text-slate-600">Specialist at Codeforces (Max Rating: 1556). Solved over 800 problems on various platforms.</p>
              </div>
              <div className="p-6 bg-slate-50 rounded-lg border border-slate-200">
-                <h4 className="font-semibold text-slate-900">Hackathon Winner</h4>
+                <AnimatedText className="font-semibold text-slate-900 block">Hackathon Winner</AnimatedText>
                 <p className="mt-2 text-slate-600">Secured 3rd place at Sitnovate Hackathon, conducted by SIT, Nagpur.</p>
              </div>
              <div className="md:col-span-2 p-6 bg-slate-50 rounded-lg border border-slate-200">
-                <h4 className="font-semibold text-slate-900">Leadership</h4>
+                <AnimatedText className="font-semibold text-slate-900 block">Leadership</AnimatedText>
                 <p className="mt-2 text-slate-600">Served as Joint Secretary for the Public & Relations Cell (2022–23), where I organized flagship events like Alumni Meet 2022–23.</p>
              </div>
            </div>
@@ -275,7 +371,7 @@ export default function PortfolioPage() {
                         <MailIcon />
                     </div>
                     <div className="text-center md:text-left">
-                        <h3 className="text-3xl font-bold tracking-tight">Let's build something great.</h3>
+                        <AnimatedText className="text-3xl font-bold tracking-tight block">Let's build something great.</AnimatedText>
                         <p className="mt-3 text-slate-600 max-w-xl">
                             I'm currently open to new opportunities. If you have a project in mind or just want to connect, feel free to reach out.
                         </p>
